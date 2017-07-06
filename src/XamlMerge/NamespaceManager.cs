@@ -86,7 +86,10 @@ namespace IKriv.XamlMerge
                                 throw new ClashException(GetDefaultNamespaceInfo(defaultNamespace.NamespaceName), info);
                             }
                         }
-                        _root.Add(new XAttribute(XNamespace.Xmlns + info.Prefix, info.Uri));
+                        else
+                        {
+                            _root.Add(new XAttribute(XNamespace.Xmlns + info.Prefix, info.Uri));
+                        }
                     }
                 }
             }
@@ -107,9 +110,5 @@ namespace IKriv.XamlMerge
             if (nsDeclaration.Name.NamespaceName == "" && nsDeclaration.Name.LocalName == "xmlns") return "";
             return nsDeclaration.Name.LocalName;
         }
-
-
-
-
     }
 }
