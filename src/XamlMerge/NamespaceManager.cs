@@ -73,23 +73,31 @@ namespace IKriv.XamlMerge
                 else
                 {
                     _namespaces[info.Prefix] = info;
-                }
 
-                if (addToRoot)
-                {
-                    // cannot add new "xmlns" delaration to root element, this would change namespaces of all elements in the document
-                    if (info.Prefix == "") throw new ClashException(GetEmptyDefaultNamespace(), info);
-                    _root.Add(new XAttribute(XNamespace.Xmlns + info.Prefix, info.Uri));
+                    if (addToRoot)
+                    {
+                        // cannot add new "xmlns" delaration to root element, this would change namespaces of all elements in the document
+                        if (info.Prefix == "")
+                        {
+                            var defaultNamespace = _root.GetDefaultNamespace();
+                            if (info.Uri != defaultNamespace)
+                            {
+                                info.Prefix = "xmlns";
+                                throw new ClashException(GetDefaultNamespaceInfo(defaultNamespace.NamespaceName), info);
+                            }
+                        }
+                        _root.Add(new XAttribute(XNamespace.Xmlns + info.Prefix, info.Uri));
+                    }
                 }
             }
         }
 
-        private NamespaceInfo GetEmptyDefaultNamespace()
+        private NamespaceInfo GetDefaultNamespaceInfo(string uri)
         {
             return new NamespaceInfo
             {
-                Prefix = "",
-                Uri = "",
+                Prefix = "xmlns",
+                Uri = uri,
                 OriginFilePath = _rootFilePath
             };
         }

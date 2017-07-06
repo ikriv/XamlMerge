@@ -53,7 +53,7 @@ namespace IKriv.XamlMerge
             public void Insert(XNode node)
             {
                 _insertPoint.AddAfterSelf(node);
-                _insertPoint = node;
+                _insertPoint = _insertPoint.NextNode;
             }
         }
 
@@ -225,7 +225,7 @@ namespace IKriv.XamlMerge
                     return;
                 }
 
-                if (documentRoot.Name == ResourceDictionaryName)
+                if (documentRoot.Name != ResourceDictionaryName)
                 {
                     Error(indent, $"Root element is not resource dictionarty: <{documentRoot.Name.LocalName}>");
                     return;

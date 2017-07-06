@@ -9,7 +9,7 @@ namespace IKriv.XamlMerge
             new Regex("<[^>]+xmlns:[^'\"]+=\\s*(\"clr-namespace:[^\"]+\"|'clr-namespace:[^']+')[^>]*>");
 
         private static readonly Regex ClrNamespace =
-            new Regex("xmkns:(?<Prefix>\\w+?)=['\"](?<Namespace>clr-namespace:[^\\s;'\"]+)['\"]");
+            new Regex("xmlns:(?<Prefix>\\w+?)=['\"](?<Namespace>clr-namespace:[^\\s;'\"]+)['\"]");
 
         /// <summary>
         /// Adds ";assembly=" to all clr namespaces in the xml that don't have assembly specifieid
@@ -18,7 +18,7 @@ namespace IKriv.XamlMerge
         {
             var replaced = ElementWithClrNamespace.Replace(xaml,
                 match => ClrNamespace.Replace(match.Value,
-                    "xmlns:${Prefix}=\"{Namespace};assembly=" + assembly + "\""));
+                    "xmlns:${Prefix}=\"${Namespace};assembly=" + assembly + "\""));
 
             return replaced;
         }
@@ -30,6 +30,7 @@ namespace IKriv.XamlMerge
         {
             if (assembly == null) return uri;
             if (!uri.StartsWith("clr-namespace")) return uri;
+            if (uri.Contains(";assembly=")) return uri;
             return uri + ";assembly=" + assembly;
         }
     }
