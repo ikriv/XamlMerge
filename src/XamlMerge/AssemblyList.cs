@@ -43,8 +43,8 @@ namespace IKriv.XamlMerge
                 _assemblies[name] = path;
             }
 
-            var root = this["@root"];
-            if (root != null) Root = root;
+            var newRoot = this["@root"];
+            if (newRoot != null) Root = Path.Combine(Root, newRoot);
 
             return this;
         }
