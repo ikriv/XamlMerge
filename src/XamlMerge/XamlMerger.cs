@@ -253,7 +253,7 @@ namespace IKriv.XamlMerge
                 // merge content of the file into the root file
                 if (toMerge != null)
                 {
-                    _resourceInserter.Insert(new XComment("Merged from " + mergedXaml.Path));
+                    _resourceInserter.Insert(new XComment(" Merged from " + mergedXaml.Path + " "));
 
                     while (toMerge != null)
                     {
@@ -261,7 +261,7 @@ namespace IKriv.XamlMerge
                         toMerge = toMerge.NextNode;
                     }
 
-                    _resourceInserter.Insert(new XComment("End merged from " + mergedXaml.Path));
+                    _resourceInserter.Insert(new XComment(" End merged from " + mergedXaml.Path + " "));
                 }
             }
             catch (NamespaceManager.ClashException ex)

@@ -40,17 +40,17 @@ namespace IKriv.XamlMerge.Tests
         [Test]
         public void EmptyAppXaml_ShouldBeAlmostUnchanged()
         {
-            _fs[XamlFile] = TestFiles.EmptyApp;
+            _fs[XamlFile] = TestApps.EmptyApp;
             _fs[AssembliesFile] = String.Empty;
             bool success = CreateObject().Run();
             Assert.IsTrue(success);
-            Assert.AreEqual(TestFiles.EmptyAppProcessed, _fs[MergedXamlFile]);
+            Assert.AreEqual(TestApps.EmptyAppProcessed, _fs[MergedXamlFile]);
         }
 
         [Test]
         public void EmptyAppXaml_CannotOutputAsResOnly()
         {
-            _fs[XamlFile] = TestFiles.EmptyApp;
+            _fs[XamlFile] = TestApps.EmptyApp;
             _fs[AssembliesFile] = String.Empty;
             _options.OutputResourcesOnly = true;
             bool success = CreateObject().Run();
@@ -61,17 +61,17 @@ namespace IKriv.XamlMerge.Tests
         [Test]
         public void AppWithoutRdElement_ShouldBeAlmostUnchanged()
         {
-            _fs[XamlFile] = TestFiles.AppWithoutRdElement;
+            _fs[XamlFile] = TestApps.AppWithoutRdElement;
             _fs[AssembliesFile] = String.Empty;
             bool success = CreateObject().Run();
             Assert.IsTrue(success);
-            Assert.AreEqual(TestFiles.AppWithoutRdElementProcessed, _fs[MergedXamlFile]);
+            Assert.AreEqual(TestApps.AppWithoutRdElementProcessed, _fs[MergedXamlFile]);
         }
 
         [Test]
         public void AppWithoutRdElement_CannotOutputAsResOnly()
         {
-            _fs[XamlFile] = TestFiles.AppWithoutRdElement;
+            _fs[XamlFile] = TestApps.AppWithoutRdElement;
             _fs[AssembliesFile] = String.Empty;
             _options.OutputResourcesOnly = true;
             bool success = CreateObject().Run();
@@ -81,23 +81,147 @@ namespace IKriv.XamlMerge.Tests
         [Test]
         public void AppWithoutMdElement_ShouldBeAlmostUnchanged()
         {
-            _fs[XamlFile] = TestFiles.AppWithoutMdElement;
+            _fs[XamlFile] = TestApps.AppWithoutMdElement;
             _fs[AssembliesFile] = String.Empty;
             bool success = CreateObject().Run();
             Assert.IsTrue(success);
-            Assert.AreEqual(TestFiles.AppWithoutMdElementProcessed, _fs[MergedXamlFile]);
+            Assert.AreEqual(TestApps.AppWithoutMdElementProcessed, _fs[MergedXamlFile]);
         }
 
         [Test]
         public void AppWithoutMdElement_AsResOnly()
         {
-            _fs[XamlFile] = TestFiles.AppWithoutMdElement;
+            _fs[XamlFile] = TestApps.AppWithoutMdElement;
             _fs[AssembliesFile] = String.Empty;
             _options.OutputResourcesOnly = true;
             bool success = CreateObject().Run();
             Assert.IsTrue(success);
-            Assert.AreEqual(TestFiles.AppWithoutMdElementAsResOnly, _fs[MergedXamlFile]);
+            Assert.AreEqual(TestApps.AppWithoutMdElementAsResOnly, _fs[MergedXamlFile]);
         }
+
+        [Test]
+        public void AppWithEmptyMdElement_ShouldBeAlmostUnchanged()
+        {
+            _fs[XamlFile] = TestApps.AppWithoutMdElement;
+            _fs[AssembliesFile] = String.Empty;
+            bool success = CreateObject().Run();
+            Assert.IsTrue(success);
+            Assert.AreEqual(TestApps.AppWithoutMdElementProcessed, _fs[MergedXamlFile]);
+        }
+
+        [Test]
+        public void AppWithEmptyMdElement_AsResOnly()
+        {
+            _fs[XamlFile] = TestApps.AppWithoutMdElement;
+            _fs[AssembliesFile] = String.Empty;
+            _options.OutputResourcesOnly = true;
+            bool success = CreateObject().Run();
+            Assert.IsTrue(success);
+            Assert.AreEqual(TestApps.AppWithoutMdElementAsResOnly, _fs[MergedXamlFile]);
+        }
+
+        [Test]
+        public void AppWithLocalMd_MdIsMerged()
+        {
+            _fs[XamlFile] = TestApps.AppWithLocalMd;
+            _fs["Local.xaml"] = TestDitionaries.SimpleMergedDictionary;
+            _fs[AssembliesFile] = String.Empty;
+            bool success = CreateObject().Run();
+            Assert.IsTrue(success);
+            Assert.AreEqual(TestApps.AppWithLocalMdProcessed, _fs[MergedXamlFile]);
+        }
+
+        [Test]
+        public void AppWithLocalMd_MdIsMerged_ResOnly()
+        {
+            _fs[XamlFile] = TestApps.AppWithLocalMd;
+            _fs["Local.xaml"] = TestDitionaries.SimpleMergedDictionary;
+            _fs[AssembliesFile] = String.Empty;
+            _options.OutputResourcesOnly = true;
+            bool success = CreateObject().Run();
+            Assert.IsTrue(success);
+            Assert.AreEqual(TestApps.AppWithLocalMdAsResOnly, _fs[MergedXamlFile]);
+        }
+
+        [Test]
+        public void AppWithExternalMd_ExternalMdRefRetained()
+        {
+            _fs[XamlFile] = TestApps.AppWithExternalMd;
+            _fs[AssembliesFile] = "External.Assembly=@extern";
+            bool success = CreateObject().Run();
+            Assert.IsTrue(success);
+            Assert.AreEqual(TestApps.AppWithExternalMdProcessed, _fs[MergedXamlFile]);
+        }
+
+        [Test]
+        public void AppWithExternalMd_AsResOnly()
+        {
+            _fs[XamlFile] = TestApps.AppWithExternalMd;
+            _fs[AssembliesFile] = "External.Assembly=@extern";
+            _options.OutputResourcesOnly = true;
+            bool success = CreateObject().Run();
+            Assert.IsTrue(success);
+            Assert.AreEqual(TestApps.AppWithExternalMdAsResOnly, _fs[MergedXamlFile]);
+        }
+
+        [Test]
+        public void AppWithOurAssemblyMd_MdMerged()
+        {
+            _fs[XamlFile] = TestApps.AppWithOurAssemblyMd;
+            _fs[@"Our.Assembly\Resources\Stuff.xaml"] = TestDitionaries.SimpleMergedDictionary;
+            _fs[AssembliesFile] = "Our.Assembly";
+            bool success = CreateObject().Run();
+            Assert.IsTrue(success);
+            Assert.AreEqual(TestApps.AppWithOurAssemblyMdProcessed, _fs[MergedXamlFile]);
+        }
+
+        [Test]
+        public void AppWithOurAssemblyMd_ResOnly()
+        {
+            _fs[XamlFile] = TestApps.AppWithOurAssemblyMd;
+            _fs[@"Our.Assembly\Resources\Stuff.xaml"] = TestDitionaries.SimpleMergedDictionary;
+            _fs[AssembliesFile] = "Our.Assembly";
+            _options.OutputResourcesOnly = true;
+            bool success = CreateObject().Run();
+            Assert.IsTrue(success);
+            Assert.AreEqual(TestApps.AppWithOurAssemblyMdAsResOnly, _fs[MergedXamlFile]);
+        }
+
+        [Test]
+        public void AppWithRecursiveMd_MergedRecursively()
+        {
+            _fs[XamlFile] = TestApps.AppWithRecursiveMd;
+            _fs[@"Our.Assembly\Resources\Recursive.xaml"] = TestDitionaries.RecursiveDictionary;
+            _fs[@"Another.Assembly\Resources\Stuff.xaml"] = TestDitionaries.SimpleMergedDictionary;
+            _fs[AssembliesFile] = 
+@"Our.Assembly
+Another.Assembly
+External.Assembly=@extern
+Some.Assembly=@extern
+UX.Themes=@extern";
+            bool success = CreateObject().Run();
+            Assert.IsTrue(success);
+            Assert.AreEqual(TestApps.AppWithRecursiveMdProcessed, _fs[MergedXamlFile]);
+        }
+
+        [Test]
+        public void AppWithRecursiveMd_ResOnly()
+        {
+            _fs[XamlFile] = TestApps.AppWithRecursiveMd;
+            _fs[@"Our.Assembly\Resources\Recursive.xaml"] = TestDitionaries.RecursiveDictionary;
+            _fs[@"Another.Assembly\Resources\Stuff.xaml"] = TestDitionaries.SimpleMergedDictionary;
+            _fs[AssembliesFile] =
+                @"Our.Assembly
+Another.Assembly
+External.Assembly=@extern
+Some.Assembly=@extern
+UX.Themes=@extern";
+            _options.OutputResourcesOnly = true;
+            bool success = CreateObject().Run();
+            Assert.IsTrue(success);
+            Assert.AreEqual(TestApps.AppWithRecursiveMdResOnly, _fs[MergedXamlFile]);
+        }
+
 
         private XamlMerger CreateObject()
         {

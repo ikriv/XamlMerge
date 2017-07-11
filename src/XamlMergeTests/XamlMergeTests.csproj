@@ -45,7 +45,8 @@
   <ItemGroup>
     <Compile Include="FakeFileSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestFiles.cs" />
+    <Compile Include="TestApps.cs" />
+    <Compile Include="TestDitionaries.cs" />
     <Compile Include="XamlMergerTests.cs" />
   </ItemGroup>
   <ItemGroup>
