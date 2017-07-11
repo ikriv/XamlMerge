@@ -325,5 +325,36 @@ xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>
   <SolidColorBrush x:Key='bla' Color='#FFFFFF' />
 </ResourceDictionary>");
 
+        public static readonly string AppWithRecursiveMdAlteredPaths =
+            R(@"<ResourceDictionary xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
+xmlns:ourVm='clr-namespace:Our.Assembly.ViewModels;assembly=Our.Assembly'
+xmlns:ourViews='clr-namespace:Our.Assembly.Views;assembly=Our.Assembly'
+xmlns:vm='clr-namespace:Local.ViewModels;assembly=Another.Assembly'
+xmlns:views='clr-namespace:Local.Views;assembly=Another.Assembly'
+xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>
+  <ResourceDictionary.MergedDictionaries>
+    <MergedDictionary Source='pack://application,,,/Some.Assembly;component/Bla/Bla.xaml' />
+    <MergedDictionary Source='pack://application,,,/External.Assembly;component/Resources/Thing.xaml' />
+    <MergedDictionary Source='pack://application,,,/UX.Themes;component/Theme/generic.xaml' />
+  </ResourceDictionary.MergedDictionaries>
+  <!-- Merged from c:\some\dir\Another\Resources\Stuff.xaml -->
+  <SolidColorBrush x:Key='Foreground' Color='#FF0000' />
+  <DataTemplate DataType='{x:Type vm:CoolViewModel}'>
+    <StackPanel Orientation='Vertical'>
+      <Label>This is views:CoolControl</Label>
+      <views:CoolControl />
+    </StackPanel>
+  </DataTemplate>
+  <!-- End merged from c:\some\dir\Another\Resources\Stuff.xaml -->
+  <!-- Merged from c:\some\dir\Our\Resources\Recursive.xaml -->
+  <DataTemplate DataType='{x:Type ourVm:CoolViewModel}'>
+    <StackPanel Orientation='Vertical'>
+      <Label>This is views:CoolControl</Label>
+      <ourViews:CoolControl />
+    </StackPanel>
+  </DataTemplate>
+  <!-- End merged from c:\some\dir\Our\Resources\Recursive.xaml -->
+  <SolidColorBrush x:Key='bla' Color='#FFFFFF' />
+</ResourceDictionary>");
     }
 }

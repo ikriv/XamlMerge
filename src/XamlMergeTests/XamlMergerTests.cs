@@ -16,10 +16,12 @@ namespace IKriv.XamlMerge.Tests
         private FakeFileSystem _fs;
         private Options _options;
         private StringWriter _log;
+        private string _assembliesFile;
 
         [SetUp]
         public void Setup()
         {
+            _assembliesFile = AssembliesFile;
             _fs = new FakeFileSystem(RootDir);
             _options = new Options
             {
@@ -222,10 +224,30 @@ UX.Themes=@extern";
             Assert.AreEqual(TestApps.AppWithRecursiveMdResOnly, _fs[MergedXamlFile]);
         }
 
+        [Test]
+        public void AppWithRecursiveMd_AlteredPaths()
+        {
+            _fs[@"Main\App.xaml"] = TestApps.AppWithRecursiveMd;
+            _fs[@"Our\Resources\Recursive.xaml"] = TestDitionaries.RecursiveDictionary;
+            _fs[@"Another\Resources\Stuff.xaml"] = TestDitionaries.SimpleMergedDictionary;
+            _assembliesFile = Path.Combine(RootDir, @"Main\assemblies.txt");
+            _fs[_assembliesFile] =
+                @"@root=..
+Our.Assembly=Our
+Another.Assembly=Another
+External.Assembly=@extern
+Some.Assembly=@extern
+UX.Themes=@extern";
+            _options.OutputResourcesOnly = true;
+            _options.XamlPath = Path.Combine(RootDir, @"Main\App.xaml");
+            bool success = CreateObject().Run();
+            Assert.IsTrue(success);
+            Assert.AreEqual(TestApps.AppWithRecursiveMdAlteredPaths, _fs[MergedXamlFile]);
+        }
 
         private XamlMerger CreateObject()
         {
-            var assemblyList = new AssemblyList(_fs).Readfile(AssembliesFile);
+            var assemblyList = new AssemblyList(_fs).Readfile(_assembliesFile);
             return new XamlMerger(_options, assemblyList, _log, _fs);
         }
     }
