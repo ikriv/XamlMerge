@@ -26,8 +26,9 @@ namespace IKriv.XamlMerge
                 return 2;
             }
 
-            var assemblyList = new AssemblyList().Readfile(options.AssembliesListPath);
-            var merger = new XamlMerger(options, assemblyList, Console.Out);
+            var fs = new FileSystem();
+            var assemblyList = new AssemblyList(fs).Readfile(options.AssembliesListPath);
+            var merger = new XamlMerger(options, assemblyList, Console.Out, fs);
             return merger.Run() ? 0 : 3;
         }
     }

@@ -13,6 +13,7 @@ namespace IKriv.XamlMerge
         private readonly XamlFile _xaml;
         private readonly AssemblyList _assemblyList;
         private readonly TextWriter _log;
+        private readonly IFileSystem _fs;
         private XmlInserter _resourceInserter;
         private XmlInserter _mdInserter;
         private readonly Options _options;
@@ -25,19 +26,20 @@ namespace IKriv.XamlMerge
         private static readonly XName ResourceDictionaryName = Wpf + "ResourceDictionary";
         private static readonly XName MergedDictionariesName = Wpf + "ResourceDictionary.MergedDictionaries";
 
-        public XamlMerger(Options options, AssemblyList assemblyList, TextWriter log)
+        public XamlMerger(Options options, AssemblyList assemblyList, TextWriter log, IFileSystem fs)
         {
-            _xaml = new XamlFile().Read(options.XamlPath);
             _assemblyList = assemblyList;
             _options = options;
             _log = log;
+            _fs = fs;
+            _xaml = new XamlFile(fs).Read(options.XamlPath);
         }
 
         public bool Run()
         {
             var outputNode = ProcessMainFile();
+            OutputResult(outputNode);
             OutputSummary();
-            if (outputNode != null) OutputResult(outputNode);
             return _errors == 0;
         }
 
@@ -105,7 +107,7 @@ namespace IKriv.XamlMerge
 
             if (rd == null)
             {
-                Warning("", "<ResourceDictionary> element not found, nothing to procses");
+                Warning("", "<ResourceDictionary> element not found, nothing to prosess");
                 return outputNode;
             }
 
@@ -197,7 +199,7 @@ namespace IKriv.XamlMerge
 
                 if (IsAlreadyMerged(path, indent)) return;
                 var assembly = source.Assembly ?? parentXaml.Assembly;
-                var mergedXaml = new XamlFile(assembly).Read(path);
+                var mergedXaml = new XamlFile(_fs, assembly).Read(path);
                 MergeXamlFile(mergedXaml, indent + " ");
             }
         }
@@ -291,6 +293,12 @@ namespace IKriv.XamlMerge
 
         private void OutputResult(XNode node)
         {
+            if (node == null)
+            {
+                Error("", "The output is empty");
+                return;
+            }
+
             var settings = new XmlWriterSettings
             {
                 Indent = true,
@@ -308,7 +316,7 @@ namespace IKriv.XamlMerge
                 }
 
                 var content = sw.ToString().Replace("xmlns:", Environment.NewLine + "xmlns:");
-                File.WriteAllText(_options.OutPath, content);
+                _fs.WriteAllText(_options.OutPath, content);
             }
         }
     }

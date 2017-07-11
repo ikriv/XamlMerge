@@ -6,13 +6,19 @@ namespace IKriv.XamlMerge
     class AssemblyList
     {
         private readonly Dictionary<string, string> _assemblies = new Dictionary<string, string>();
+        private readonly IFileSystem _fs;
 
         public string Root { get; private set; }
+
+        public AssemblyList(IFileSystem fs)
+        {
+            _fs = fs;
+        }
 
         public AssemblyList Readfile(string path)
         {
             Root = Path.GetDirectoryName(path);
-            return ReadText(File.ReadAllLines(path));
+            return ReadText(_fs.ReadAllLines(path));
         }
 
         public string this[string name]

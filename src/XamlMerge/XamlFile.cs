@@ -1,13 +1,15 @@
 ﻿using System;
-using System.IO;
 using System.Xml.Linq;
 
 namespace IKriv.XamlMerge
 {
     class XamlFile
     {
-        public XamlFile(string assembly = null)
+        private readonly IFileSystem _fs;
+
+        public XamlFile(IFileSystem fs, string assembly = null)
         {
+            _fs = fs;
             Assembly = assembly;
         }
 
@@ -23,11 +25,11 @@ namespace IKriv.XamlMerge
 
                 if (Assembly == null)
                 {
-                    Xml = XDocument.Load(path);
+                    Xml = _fs.ReadXml(path);
                 }
                 else
                 {
-                    var content = File.ReadAllText(path);
+                    var content = _fs.ReadAllText(path);
                     var normalized = new ClrNamespaceHelper().NormalizeLocalNamespaces(content, Assembly);
                     Xml = XDocument.Parse(normalized);
                 }
