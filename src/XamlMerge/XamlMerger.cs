@@ -315,9 +315,19 @@ namespace IKriv.XamlMerge
                     node.WriteTo(writer);
                 }
 
-                var content = sw.ToString().Replace("xmlns:", Environment.NewLine + "xmlns:");
+                var content = AddNewLineAfterXmlns(sw.ToString());
                 _fs.WriteAllText(_options.OutPath, content);
             }
+        }
+
+        private static string AddNewLineAfterXmlns(string input)
+        {
+            var xmlElement = new Regex("<[^>]+>");
+            var xmlns = new Regex("(?<decl>xmlns(:[\\w\\d]+)?=('[^']*'|\"[^\"]*\"))\\s+");
+
+            return xmlElement.Replace(input, 
+                m => xmlns.Replace(m.Value, decl=>decl.Groups["decl"].Value + Environment.NewLine),
+                1);
         }
     }
 }

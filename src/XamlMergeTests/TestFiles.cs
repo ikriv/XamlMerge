@@ -17,11 +17,12 @@ R(@"<Application x:Class='TestWpfProject.App'
 </Application>");
 
         public static readonly string EmptyAppProcessed =
-R(@"<Application x:Class='TestWpfProject.App' xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' 
-xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml' StartupUri='MainWindow.xaml'></Application>");
+R(@"<Application x:Class='TestWpfProject.App' xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
+StartupUri='MainWindow.xaml'></Application>");
 
         public static readonly string AppWithoutRdElement =
-R(@"<Application x:Class='TestWpfProject.App' 
+R(@"<Application x:Class='TestWpfProject.App'
               xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
               xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml' StartupUri='MainWindow.xaml'>
     <Application.Resources>
@@ -30,17 +31,18 @@ R(@"<Application x:Class='TestWpfProject.App'
 </Application>");
 
         public static readonly string AppWithoutRdElementProcessed =
-R(@"<Application x:Class='TestWpfProject.App' xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' 
-xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml' StartupUri='MainWindow.xaml'>
+R(@"<Application x:Class='TestWpfProject.App' xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
+StartupUri='MainWindow.xaml'>
   <Application.Resources>
     <SolidColorBrush x:Key='bla' Color='#FFFFFF' />
   </Application.Resources>
 </Application>");
 
         public static readonly string AppWithoutMdElement =
-R(@"<Application x:Class='TestWpfProject.App' 
-              xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
-              xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml' StartupUri='MainWindow.xaml'>
+R(@"<Application x:Class='TestWpfProject.App' xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
+StartupUri='MainWindow.xaml'>
     <Application.Resources>
         <ResourceDictionary>
             <SolidColorBrush x:Key='bla' Color='#FFFFFF' />
@@ -49,8 +51,9 @@ R(@"<Application x:Class='TestWpfProject.App'
 </Application>");
 
         public static readonly string AppWithoutMdElementProcessed =
-R(@"<Application x:Class='TestWpfProject.App' xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' 
-xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml' StartupUri='MainWindow.xaml'>
+R(@"<Application x:Class='TestWpfProject.App' xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
+StartupUri='MainWindow.xaml'>
   <Application.Resources>
     <ResourceDictionary>
       <SolidColorBrush x:Key='bla' Color='#FFFFFF' />
@@ -59,8 +62,8 @@ xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml' StartupUri='MainWindow.xa
 </Application>");
 
         public static readonly string AppWithoutMdElementAsResOnly =
-R(@"<ResourceDictionary 
-xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml' xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>
+R(@"<ResourceDictionary xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
+xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>
   <SolidColorBrush x:Key='bla' Color='#FFFFFF' />
 </ResourceDictionary>");
 
