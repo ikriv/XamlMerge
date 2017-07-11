@@ -1,0 +1,23 @@
+<Application x:Class="TestWpfProject.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StartupUri="MainWindow.xaml" 
+xmlns:myLibrary="clr-namespace:MyLibrary;assembly=MyLibrary" 
+xmlns:local="clr-namespace:MyLibrary;assembly=MyLibrary">
+  <Application.Resources>
+    <ResourceDictionary>
+      <!--Merged from C:\ivan\dev\github\XamlMerge\TestWpfProject\MyLibrary\MyLibraryBrushes.xaml-->
+      <SolidColorBrush x:Key="{x:Static myLibrary:MyKeys.MainBackground}" Color="Red" />
+      <SolidColorBrush x:Key="{x:Static myLibrary:MyKeys.MainForeground}" Color="Yellow" />
+      <!--End merged from C:\ivan\dev\github\XamlMerge\TestWpfProject\MyLibrary\MyLibraryBrushes.xaml-->
+      <!--Merged from C:\ivan\dev\github\XamlMerge\TestWpfProject\MyLibrary\MyLibraryStyles.xaml-->
+      <Style TargetType="{x:Type Label}">
+        <Setter Property="Foreground" Value="{StaticResource {x:Static local:MyKeys.MainForeground}}" />
+      </Style>
+      <!--End merged from C:\ivan\dev\github\XamlMerge\TestWpfProject\MyLibrary\MyLibraryStyles.xaml-->
+      <!--Merged from C:\ivan\dev\github\XamlMerge\TestWpfProject\MyLibrary\MyLibrary.xaml-->
+      <DataTemplate DataType="{x:Type myLibrary:RedSquareViewModel}">
+        <local:RedSquare />
+      </DataTemplate>
+      <!--End merged from C:\ivan\dev\github\XamlMerge\TestWpfProject\MyLibrary\MyLibrary.xaml-->
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

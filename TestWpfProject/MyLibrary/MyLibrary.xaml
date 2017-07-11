@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:myLibrary="clr-namespace:MyLibrary">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="MyLibraryBrushes.xaml" />
+        <ResourceDictionary Source="MyLibraryStyles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <DataTemplate DataType="{x:Type myLibrary:RedSquareViewModel}">
+        <myLibrary:RedSquare />
+    </DataTemplate>
+</ResourceDictionary>
