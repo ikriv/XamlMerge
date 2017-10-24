@@ -161,24 +161,31 @@ namespace IKriv.XamlMerge
                 var source = child.Attribute("Source")?.Value.Trim();
                 if (source == null)
                 {
-                    _log.WriteLine("no Source attribute");
-                    Error(indent, "Merged dictionaries without Source attribute are not supported");
-                    continue;
+                    MergeCustomDictionary(child);
                 }
-
-                _log.Write("'" + source + "' => ");
-                var sourceUri = new SourceUri(source);
-
-                if (!IsKnownAssembly(sourceUri.Assembly))
+                else
                 {
-                    _log.WriteLine("UNKNOWN PATH");
-                    Error(indent, $"Assembly {sourceUri.Assembly} is not listed. Please specify its path in the assembly list or add line {sourceUri.Assembly}=@xternal");
-                    continue;
-                }
+                    _log.Write("'" + source + "' => ");
+                    var sourceUri = new SourceUri(source);
 
-                MergeDictionary(xamlFile, child, sourceUri, indent);
+                    if (!IsKnownAssembly(sourceUri.Assembly))
+                    {
+                        _log.WriteLine("UNKNOWN PATH");
+                        Error(indent,
+                            $"Assembly {sourceUri.Assembly} is not listed. Please specify its path in the assembly list or add line {sourceUri.Assembly}=@xternal");
+                        continue;
+                    }
+
+                    MergeDictionary(xamlFile, child, sourceUri, indent);
+                }
                 child.Remove();
             }
+        }
+
+        private void MergeCustomDictionary(XElement mdElement)
+        {
+            _log.WriteLine($"{mdElement.Name} has no Source attribute, including verbatim");
+            _mdInserter.Insert(mdElement);
         }
 
         private void MergeDictionary(XamlFile parentXaml, XNode mdElement, SourceUri source, string indent)

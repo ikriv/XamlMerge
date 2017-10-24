@@ -38,5 +38,14 @@ xmlns:ourViews='clr-namespace:Our.Assembly.Views'>
     </DataTemplate>
 </ResourceDictionary>");
 
+        public static readonly string DictionaryWithCustomMd =
+            R(@"<ResourceDictionary xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
+xmlns:custom='clr-namespace:My.Custom.Namespace;assembly=Some.Assembly'>
+    <ResourceDictionary.MergedDictionaries>
+        <custom:MyMergedDictionary Magic='winguardia leviosa' />
+    </ResourceDictionary.MergedDictionaries>
+    <SolidColorBrush x:Key='something' Color='Red' />
+</ResourceDictionary>");
     }
 }

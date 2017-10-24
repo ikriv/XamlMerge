@@ -245,6 +245,54 @@ UX.Themes=@extern";
             Assert.AreEqual(TestApps.AppWithRecursiveMdAlteredPaths, _fs[MergedXamlFile]);
         }
 
+        [Test]
+        public void AppWithCustomMd_CustomMdIncludedVerbatim()
+        {
+            _fs[XamlFile] = TestApps.AppWithCustomMd;
+            _fs["Local.xaml"] = TestDitionaries.SimpleMergedDictionary;
+            _fs[AssembliesFile] = "";
+            bool success = CreateObject().Run();
+            Assert.IsTrue(success);
+            Assert.AreEqual(TestApps.AppWithCustomMdProcessed, _fs[MergedXamlFile]);
+        }
+
+
+        [Test]
+        public void AppWithCustomMd_ResOnly()
+        {
+            _fs[XamlFile] = TestApps.AppWithCustomMd;
+            _fs["Local.xaml"] = TestDitionaries.SimpleMergedDictionary;
+            _fs[AssembliesFile] = "";
+            _options.OutputResourcesOnly = true;
+            bool success = CreateObject().Run();
+            Assert.IsTrue(success);
+            Assert.AreEqual(TestApps.AppWithCustomMdResOnly, _fs[MergedXamlFile]);
+        }
+
+        [Test]
+        public void AppWithIndirectCustomMd_CustomMdIncludedVerbatim()
+        {
+            _fs[XamlFile] = TestApps.AppWithIndirectCustomMd;
+            _fs["Local.xaml"] = TestDitionaries.DictionaryWithCustomMd;
+            _fs[AssembliesFile] = "";
+            bool success = CreateObject().Run();
+            Assert.IsTrue(success);
+            Assert.AreEqual(TestApps.AppWithIndirectCustomMdProcessed, _fs[MergedXamlFile]);
+        }
+
+
+        [Test]
+        public void AppWithIndirectrCustomMd_ResOnly()
+        {
+            _fs[XamlFile] = TestApps.AppWithIndirectCustomMd;
+            _fs["Local.xaml"] = TestDitionaries.DictionaryWithCustomMd;
+            _fs[AssembliesFile] = "";
+            _options.OutputResourcesOnly = true;
+            bool success = CreateObject().Run();
+            Assert.IsTrue(success);
+            Assert.AreEqual(TestApps.AppWithIndirectCustomMdResOnly, _fs[MergedXamlFile]);
+        }
+
         private XamlMerger CreateObject()
         {
             var assemblyList = new AssemblyList(_fs).Readfile(_assembliesFile);

@@ -356,5 +356,114 @@ xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>
   <!-- End merged from c:\some\dir\Our\Resources\Recursive.xaml -->
   <SolidColorBrush x:Key='bla' Color='#FFFFFF' />
 </ResourceDictionary>");
+
+        public static readonly string AppWithCustomMd =
+                    R(@"<Application x:Class='TestWpfProject.App' xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
+xmlns:custom='clr-namespace:My.Custom.Namespace;assembly=Some.Assembly'
+StartupUri='MainWindow.xaml'>
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <custom:MyMergedDictionary Magic='winguardia leviosa' />
+                <MergedDictionary Source='Local.xaml' />
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key='bla' Color='#FFFFFF' />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>");
+
+        public static readonly string AppWithCustomMdProcessed =
+                    R(@"<Application x:Class='TestWpfProject.App' xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
+xmlns:custom='clr-namespace:My.Custom.Namespace;assembly=Some.Assembly'
+StartupUri='MainWindow.xaml' xmlns:vm='clr-namespace:Local.ViewModels'
+xmlns:views='clr-namespace:Local.Views'>
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <custom:MyMergedDictionary Magic='winguardia leviosa' />
+      </ResourceDictionary.MergedDictionaries>
+      <!-- Merged from c:\some\dir\Local.xaml -->
+      <SolidColorBrush x:Key='Foreground' Color='#FF0000' />
+      <DataTemplate DataType='{x:Type vm:CoolViewModel}'>
+        <StackPanel Orientation='Vertical'>
+          <Label>This is views:CoolControl</Label>
+          <views:CoolControl />
+        </StackPanel>
+      </DataTemplate>
+      <!-- End merged from c:\some\dir\Local.xaml -->
+      <SolidColorBrush x:Key='bla' Color='#FFFFFF' />
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>");
+
+        public static readonly string AppWithCustomMdResOnly =
+                    R(@"<ResourceDictionary xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
+xmlns:custom='clr-namespace:My.Custom.Namespace;assembly=Some.Assembly'
+xmlns:vm='clr-namespace:Local.ViewModels'
+xmlns:views='clr-namespace:Local.Views'
+xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>
+  <ResourceDictionary.MergedDictionaries>
+    <custom:MyMergedDictionary Magic='winguardia leviosa' />
+  </ResourceDictionary.MergedDictionaries>
+  <!-- Merged from c:\some\dir\Local.xaml -->
+  <SolidColorBrush x:Key='Foreground' Color='#FF0000' />
+  <DataTemplate DataType='{x:Type vm:CoolViewModel}'>
+    <StackPanel Orientation='Vertical'>
+      <Label>This is views:CoolControl</Label>
+      <views:CoolControl />
+    </StackPanel>
+  </DataTemplate>
+  <!-- End merged from c:\some\dir\Local.xaml -->
+  <SolidColorBrush x:Key='bla' Color='#FFFFFF' />
+</ResourceDictionary>");
+
+        public static readonly string AppWithIndirectCustomMd =
+                    R(@"<Application x:Class='TestWpfProject.App' xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
+xmlns:custom='clr-namespace:My.Custom.Namespace;assembly=Some.Assembly'
+StartupUri='MainWindow.xaml'>
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <MergedDictionary Source='Local.xaml' />
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key='bla' Color='#FFFFFF' />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>");
+
+        public static readonly string AppWithIndirectCustomMdProcessed =
+                    R(@"<Application x:Class='TestWpfProject.App' xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
+xmlns:custom='clr-namespace:My.Custom.Namespace;assembly=Some.Assembly'
+StartupUri='MainWindow.xaml'>
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <custom:MyMergedDictionary Magic='winguardia leviosa' />
+      </ResourceDictionary.MergedDictionaries>
+      <!-- Merged from c:\some\dir\Local.xaml -->
+      <SolidColorBrush x:Key='something' Color='Red' />
+      <!-- End merged from c:\some\dir\Local.xaml -->
+      <SolidColorBrush x:Key='bla' Color='#FFFFFF' />
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>");
+
+        public static readonly string AppWithIndirectCustomMdResOnly =
+                    R(@"<ResourceDictionary xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
+xmlns:custom='clr-namespace:My.Custom.Namespace;assembly=Some.Assembly'
+xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>
+  <ResourceDictionary.MergedDictionaries>
+    <custom:MyMergedDictionary Magic='winguardia leviosa' />
+  </ResourceDictionary.MergedDictionaries>
+  <!-- Merged from c:\some\dir\Local.xaml -->
+  <SolidColorBrush x:Key='something' Color='Red' />
+  <!-- End merged from c:\some\dir\Local.xaml -->
+  <SolidColorBrush x:Key='bla' Color='#FFFFFF' />
+</ResourceDictionary>");
+
     }
 }
